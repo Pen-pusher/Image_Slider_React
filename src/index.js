@@ -9,6 +9,7 @@ const styles = {
   fontFamily: "sans-serif",
   textAlign: "center"
 };
+// slider component
 class Slider extends React.Component {
   constructor(props) {
     super(props);
@@ -159,6 +160,8 @@ const Dots = ({ images, currentIndex, handleDotClick }) => {
     </div>
   );
 };
+
+// app component
 class App extends React.Component {
   state = {
     open: false
