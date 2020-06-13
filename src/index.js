@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
-
+import Mygallery from "./components/slider1";
 import "./assets/reset.scss";
 import "./assets/main.scss";
 const styles = {
@@ -16,17 +16,12 @@ class Slider extends React.Component {
 
     this.state = {
       images: [
-        "https://images.unsplash.com/photo-1561275526-4d2c9c9c435c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-        "https://images.unsplash.com/photo-1567943834464-fd9c466ed9be?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-        "https://images.unsplash.com/photo-1528690041201-a8217b45b970?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-        "https://images.unsplash.com/photo-1447756069423-994698ebbf70?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-        "https://images.unsplash.com/photo-1462007895615-c8c073bebcd8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-        "https://images.unsplash.com/photo-1462007895615-c8c073bebcd8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-        "https://images.unsplash.com/photo-1591018809419-e56a7c5f12e3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-        "https://images.unsplash.com/photo-1553337546-017c3075360c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+        "https://picsum.photos/id/1018/1000/600/",
+        "https://picsum.photos/id/1015/1000/600/"
       ],
       currentIndex: 0,
-      translateValue: 0
+      translateValue: 0,
+      open: true
     };
   }
 
@@ -90,22 +85,27 @@ class Slider extends React.Component {
     });
   };
 
+  // handleClick = () => {
+  //   const { currentIndex, images, open } = this.state;
+  //   const current = images[currentIndex];
+  // };
   render() {
+    const { currentIndex, images, open } = this.state;
+    const current = images[currentIndex];
     return (
       <div className="slider">
+        <div>Beautiful Pics</div>
+        <br />
         <div
           className="slider-wrapper"
           style={{
             transform: `translateX(${this.state.translateValue}px)`,
             transition: "transform ease-out 0.45s"
           }}
+          onClick={this.props.close}
         >
           {this.renderSlides()}
         </div>
-
-        <LeftArrow goToPrevSlide={this.goToPrevSlide} />
-
-        <RightArrow goToNextSlide={this.goToNextSlide} />
 
         <Dots
           images={this.state.images}
@@ -130,22 +130,6 @@ const Slide = ({ image, isActive }) => {
   );
 };
 
-const LeftArrow = props => {
-  return (
-    <div className="backArrow arrow" onClick={props.goToPrevSlide}>
-      <i className=" arrow-left" aria-hidden="true"></i>
-    </div>
-  );
-};
-
-const RightArrow = props => {
-  return (
-    <div className="nextArrow arrow" onClick={props.goToNextSlide}>
-      <i className=" arrow-right " aria-hidden="true"></i>
-    </div>
-  );
-};
-
 const Dots = ({ images, currentIndex, handleDotClick }) => {
   return (
     <div className="dots-container">
@@ -164,7 +148,7 @@ const Dots = ({ images, currentIndex, handleDotClick }) => {
 // app component
 class App extends React.Component {
   state = {
-    open: false
+    open: true
   };
 
   onOpenModal = () => {
@@ -178,16 +162,12 @@ class App extends React.Component {
   render() {
     const { open } = this.state;
     return (
-      <div style={styles}>
-        <h2 style={{ marginTop: "20px", marginBottom: "20px" }}>Click Me !</h2>
-        <img
-          src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-          onClick={this.onOpenModal}
-          className="First_image"
-        ></img>
-        <Modal open={open} onClose={this.onCloseModal} className="modal">
-          <Slider />
-        </Modal>
+      <div>
+        {open ? (
+          <Slider close={this.onCloseModal} />
+        ) : (
+          <Mygallery open={this.onOpenModal} />
+        )}
       </div>
     );
   }
